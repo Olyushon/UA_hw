@@ -1,8 +1,27 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Explosable : MonoBehaviour
+public class Box : MonoBehaviour, IGrabable, IExploseable
 {
-    public void Explode(Vector3 explosionCenter, float explosionForce)
+    public Transform Transform => transform;
+    
+    public void OnGrab()
+    {
+        Debug.Log("OnGrab");
+    }
+
+    public void Move(Vector3 position)
+    {
+        transform.position = position;
+    }
+
+    public void OnRelease()
+    {
+        Debug.Log("OnRelease");
+    }
+
+    public void OnExplose(Vector3 explosionCenter, float explosionForce)
     {
         Rigidbody rigidbody = GetComponent<Rigidbody>();
 
