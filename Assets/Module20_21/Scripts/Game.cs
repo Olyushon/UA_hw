@@ -9,18 +9,18 @@ public class Game : MonoBehaviour
     [SerializeField] private int _explosionForce = 15;
     [SerializeField] private GameObject _explosionEffectPrefab;
 
-    private GrabController _grabController;
-    private ExploseController _exploseController;
+    private GrabByMouseManager _grabByMouseManager;
+    private ExploseByMouseManager _exploseByMouseManager;
 
     private void Awake()
     {
-        _grabController = new GrabController(LeftMouseButton);
-        _exploseController = new ExploseController(RightMouseButton, _explosionRadius, _explosionForce, _explosionEffectPrefab);
+        _grabByMouseManager = new GrabByMouseManager(LeftMouseButton);
+        _exploseByMouseManager = new ExploseByMouseManager(RightMouseButton, _explosionRadius, _explosionForce, _explosionEffectPrefab);
     }
 
     private void Update()
     {
-        _grabController.Update(Time.deltaTime);
-        _exploseController.Update(Time.deltaTime);
+        _grabByMouseManager.Update(Time.deltaTime);
+        _exploseByMouseManager.Update(Time.deltaTime);
     }
 }

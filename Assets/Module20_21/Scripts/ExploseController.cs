@@ -2,37 +2,32 @@ using UnityEngine;
 
 public class ExploseController
 {
-    private int _mouseButton;
     private int _explosionRadius;
     private int _explosionForce;
     private GameObject _explosionEffectPrefab;
 
-    public ExploseController(int mouseButton, int explosionRadius, int explosionForce, GameObject explosionEffectPrefab)
+    public ExploseController(int explosionRadius, int explosionForce, GameObject explosionEffectPrefab)
     {
-        _mouseButton = mouseButton;
         _explosionRadius = explosionRadius;
         _explosionForce = explosionForce;
         _explosionEffectPrefab = explosionEffectPrefab;
     }
 
-    public void Update(float deltaTime)
+    public void Explose()
     {
-        if (Input.GetMouseButtonDown(_mouseButton))
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (_explosionEffectPrefab != null)
+                Object.Instantiate(_explosionEffectPrefab, hit.point, Quaternion.identity);
 
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            Collider[] colliders = Physics.OverlapSphere(hit.point, _explosionRadius);
+            
+            foreach (Collider collider in colliders)
             {
-                if (_explosionEffectPrefab != null)
-                    Object.Instantiate(_explosionEffectPrefab, hit.point, Quaternion.identity);
-
-                Collider[] colliders = Physics.OverlapSphere(hit.point, _explosionRadius);
-                
-                foreach (Collider collider in colliders)
-                {
-                    if (collider.TryGetComponent<IExploseable>(out IExploseable explosable))
-                        explosable.OnExplose(hit.point, _explosionForce);
-                }
+                if (collider.TryGetComponent<IExploseable>(out IExploseable explosable))
+                    explosable.OnExplose(hit.point, _explosionForce);
             }
         }
     }

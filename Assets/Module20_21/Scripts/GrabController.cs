@@ -4,24 +4,13 @@ using UnityEngine;
 
 public class GrabController
 {
-    private int _mouseButton;
     private IGrabable _currentGrabableObject;
 
-    public GrabController(int mouseButton)
-    {
-        _mouseButton = mouseButton;
-    }
+    public GrabController() {}
 
-    public void Update(float deltaTime)
+    public void GrabObject()
     {
-        GrabObject();
-        MoveObject();
-        ReleaseObject();
-    }
-
-    private void GrabObject()
-    {
-        if (_currentGrabableObject == null && Input.GetMouseButtonDown(_mouseButton))
+        if (_currentGrabableObject == null)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -36,9 +25,9 @@ public class GrabController
         }
     }
     
-    private void MoveObject() 
+    public void MoveObject() 
     {
-        if (_currentGrabableObject != null && Input.GetMouseButton(_mouseButton))
+        if (_currentGrabableObject != null)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -49,9 +38,9 @@ public class GrabController
         }
     }
 
-    private void ReleaseObject()
+    public void ReleaseObject()
     {
-        if (Input.GetMouseButtonUp(_mouseButton))
+        if (_currentGrabableObject != null)
         {
             _currentGrabableObject.OnRelease();
             _currentGrabableObject = null;
