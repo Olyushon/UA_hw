@@ -13,22 +13,17 @@ public class ExploseController
         _explosionEffectPrefab = explosionEffectPrefab;
     }
 
-    public void Explose()
+    public void ExploseAt(Vector3 position)
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (_explosionEffectPrefab != null)
+            Object.Instantiate(_explosionEffectPrefab, position, Quaternion.identity);
 
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        Collider[] colliders = Physics.OverlapSphere(position, _explosionRadius);
+        
+        foreach (Collider collider in colliders)
         {
-            if (_explosionEffectPrefab != null)
-                Object.Instantiate(_explosionEffectPrefab, hit.point, Quaternion.identity);
-
-            Collider[] colliders = Physics.OverlapSphere(hit.point, _explosionRadius);
-            
-            foreach (Collider collider in colliders)
-            {
-                if (collider.TryGetComponent<IExploseable>(out IExploseable explosable))
-                    explosable.OnExplose(hit.point, _explosionForce);
-            }
+            if (collider.TryGetComponent<IExploseable>(out IExploseable explosable))
+                explosable.OnExplose(position, _explosionForce);
         }
     }
 }

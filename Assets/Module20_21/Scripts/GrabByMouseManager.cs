@@ -14,10 +14,20 @@ public class GrabByMouseManager
     public void Update(float deltaTime)
     {
         if (Input.GetMouseButtonDown(_mouseButton))
-            _grabController.GrabObject();
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out RaycastHit hit))
+                _grabController.GrabObject(hit.collider.gameObject);
+        }
 
         if (Input.GetMouseButton(_mouseButton))
-            _grabController.MoveObject();
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out RaycastHit hit))
+                _grabController.MoveObjectTo(hit.point);
+        }
 
         if (Input.GetMouseButtonUp(_mouseButton))
             _grabController.ReleaseObject();

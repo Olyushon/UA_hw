@@ -8,36 +8,25 @@ public class GrabController
 
     public GrabController() {}
 
-    public void GrabObject()
+    public void GrabObject(GameObject gameObject)
     {
-        if (_currentGrabableObject == null)
+        if (gameObject.TryGetComponent(out IGrabable grabable))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                if (hit.collider.TryGetComponent(out IGrabable grabable))
-                {
-                    _currentGrabableObject = grabable;
-                    _currentGrabableObject.OnGrab();
-                }
-            }
+            _currentGrabableObject = grabable;
+            _currentGrabableObject.OnGrab();
         }
     }
-    
-    public void MoveObject() 
+
+    public void MoveObjectTo(Vector3 position) 
     {
         if (_currentGrabableObject != null)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit))
-                _currentGrabableObject.Move(
-                    new Vector3(hit.point.x, _currentGrabableObject.Transform.position.y, hit.point.z)
-                );
+            _currentGrabableObject.Move(
+                new Vector3(position.x, _currentGrabableObject.Transform.position.y, position.z)
+            );
         }
     }
-
+    
     public void ReleaseObject()
     {
         if (_currentGrabableObject != null)
