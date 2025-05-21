@@ -17,8 +17,8 @@ public class GrabByMouseManager
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out RaycastHit hit))
-                _grabController.GrabObject(hit.collider.gameObject);
+            if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider.TryGetComponent<IGrabable>(out IGrabable grabable))
+                _grabController.GrabObject(grabable);
         }
 
         if (Input.GetMouseButton(_mouseButton))

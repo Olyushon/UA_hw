@@ -8,13 +8,10 @@ public class GrabController
 
     public GrabController() {}
 
-    public void GrabObject(GameObject gameObject)
+    public void GrabObject(IGrabable grabable)
     {
-        if (gameObject.TryGetComponent(out IGrabable grabable))
-        {
-            _currentGrabableObject = grabable;
-            _currentGrabableObject.OnGrab();
-        }
+        _currentGrabableObject = grabable;
+        _currentGrabableObject.OnGrab();
     }
 
     public void MoveObjectTo(Vector3 position) 
