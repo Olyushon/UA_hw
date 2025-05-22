@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Health
@@ -29,10 +27,13 @@ public class Health
 
         _health -= damage;
 
-        Debug.Log($"Health: {_health}");
-
         if (_health <= 0)
+        {
+            _health = 0;
             Die();
+        }
+
+        Debug.Log($"Health: {_health}");
 
         return true;
     }

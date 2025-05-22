@@ -2,14 +2,13 @@ using UnityEngine;
 
 public class InputExample : MonoBehaviour
 {
-    [SerializeField] private Character _character;
+    [SerializeField] private AgentCharacter _agentCharacter;
 
     private Controller _controller;
 
     private void Awake()
     {
-        _controller = new UserCharacterController(_character);
-        // _controller = new RandomAICharacterController(_character, 1f);
+        _controller = new ByMouseClickAgentController(_agentCharacter);
         _controller.Enable();
     }
 

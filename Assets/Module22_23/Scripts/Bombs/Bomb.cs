@@ -49,7 +49,6 @@ public class Bomb : MonoBehaviour
         if (_explosionEffectPrefab != null)
         {
             ParticleSystem explosionEffect = Instantiate(_explosionEffectPrefab, transform.position, Quaternion.identity);
-            // explosionEffect.Play();
         }
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, _radius);
