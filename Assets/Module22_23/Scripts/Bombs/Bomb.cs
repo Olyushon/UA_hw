@@ -7,16 +7,17 @@ public class Bomb : MonoBehaviour
     [SerializeField] private int _damage = 10;
     [SerializeField] private float _radius = 2f;
     [SerializeField] private float _activationTime = 1f;
-    [SerializeField] private ParticleSystem _explosionEffectPrefab;
 
     private bool _isActivated;
     private bool _explodingInProcess;
     private float _timer;
+    private BombView _bombView;
 
     private void Awake()
     {
         gameObject.GetComponent<SphereCollider>().radius = _radius;
         _timer = _activationTime;
+        _bombView = GetComponent<BombView>();
     }
 
     private void Update()
@@ -45,11 +46,8 @@ public class Bomb : MonoBehaviour
     private void Explode()
     {
         _explodingInProcess = true;
-
-        if (_explosionEffectPrefab != null)
-        {
-            ParticleSystem explosionEffect = Instantiate(_explosionEffectPrefab, transform.position, Quaternion.identity);
-        }
+        
+        _bombView.MakeExplosionEffect();
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, _radius);
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CharacterViewAnimator
+public class CharacterViewAnimator : MonoBehaviour
 {
     private readonly int _isRunningHash = Animator.StringToHash("IsRunning");
     private readonly int _takeDamageHash = Animator.StringToHash("HasPain");
@@ -8,13 +8,8 @@ public class CharacterViewAnimator
     private readonly string _injuredLayerName = "Injured Layer";
     private readonly int _activeLayerWeight = 1;
 
-    private Animator _animator;
+    [SerializeField] private Animator _animator;
 
-    public CharacterViewAnimator(Animator animator)
-    {
-        _animator = animator;
-    }
-    
     public void SetIsRunning(bool isRunning)
     {
         _animator.SetBool(_isRunningHash, isRunning);

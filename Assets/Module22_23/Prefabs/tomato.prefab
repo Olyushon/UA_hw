@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5462795901374942720}
   - component: {fileID: 8480366433357541773}
   - component: {fileID: 2100841832936087511}
+  - component: {fileID: 187574578464747837}
   - component: {fileID: 7471662750518835514}
   - component: {fileID: 4641408040431502668}
   m_Layer: 0
@@ -101,6 +102,18 @@ MonoBehaviour:
   _damage: 40
   _radius: 2
   _activationTime: 1
+--- !u!114 &187574578464747837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7282627670573197404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d398f522d308843269dc742a21b7d06a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _explosionEffectPrefab: {fileID: 2783782359327588823, guid: 29ed9436290be4679bb109cfee6ad870,
     type: 3}
 --- !u!135 &7471662750518835514

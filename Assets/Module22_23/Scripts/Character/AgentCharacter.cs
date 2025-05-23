@@ -8,14 +8,18 @@ public class AgentCharacter : MonoBehaviour, IDamagable, IBombActivator
 
     [SerializeField] private float _rotationSpeed = 700f;
 
-    [SerializeField] private GameObject _destinationFlagPrefab;
 
     private Health _health;
     private NavMeshAgent _agent;
     private DirectionalRotator _rotator;
     private CharacterViewAnimator _characterAnimator;
 
-    private GameObject _destinationFlag;
+
+    public bool HasPath => IsDead == false && _agent.hasPath;
+    public bool IsDestinationReached => _agent.remainingDistance <= _agent.stoppingDistance;
+    public Vector3 Destination => _agent.destination;
+    private bool IsDead => _health.IsDead;
+    private bool IsInjured => _health.IsInjured;
 
     private void Awake()
     {
@@ -26,7 +30,7 @@ public class AgentCharacter : MonoBehaviour, IDamagable, IBombActivator
 
         _rotator = new DirectionalRotator(transform, _rotationSpeed);
 
-        _characterAnimator = new CharacterViewAnimator(GetComponentInChildren<Animator>());
+        _characterAnimator = GetComponent<CharacterViewAnimator>();
     }
 
     private void Update()
@@ -38,21 +42,10 @@ public class AgentCharacter : MonoBehaviour, IDamagable, IBombActivator
 
         if (_agent.hasPath)
         {
-            if (_destinationFlag == null)
-                PutDestinationFlag();
-
             _rotator.SetInputDirection(_agent.desiredVelocity);
             _rotator.Update(Time.deltaTime);
         }
-        else if (_agent.remainingDistance <= _agent.stoppingDistance)
-        {
-            RemoveDestinationFlag();
-        }
     }
-
-    private bool IsDead => _health.IsDead;
-    private bool IsInjured => _health.IsInjured;
-
 
     public void SetDestination(Vector3 destination)
     {
@@ -74,16 +67,5 @@ public class AgentCharacter : MonoBehaviour, IDamagable, IBombActivator
             if (IsDead)
                 _characterAnimator.Die();
         }
-    }
-
-    private void PutDestinationFlag()
-    {
-        _destinationFlag = Instantiate(_destinationFlagPrefab, _agent.destination, Quaternion.identity);
-    }
-
-    private void RemoveDestinationFlag()
-    {
-        Destroy(_destinationFlag);
-        _destinationFlag = null;
     }
 }
