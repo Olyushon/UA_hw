@@ -38,8 +38,6 @@ public class AgentCharacter : MonoBehaviour, IDamagable, IBombActivator
         if (IsDead)
             return;
 
-        _characterAnimator.SetIsRunning(_agent.hasPath);
-
         if (_agent.hasPath)
         {
             _rotator.SetInputDirection(_agent.desiredVelocity);

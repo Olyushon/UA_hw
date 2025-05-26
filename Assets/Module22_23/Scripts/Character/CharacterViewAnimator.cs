@@ -9,8 +9,19 @@ public class CharacterViewAnimator : MonoBehaviour
     private readonly int _activeLayerWeight = 1;
 
     [SerializeField] private Animator _animator;
+    private AgentCharacter _agentCharacter;
 
-    public void SetIsRunning(bool isRunning)
+    private void Awake()
+    {
+        _agentCharacter = GetComponent<AgentCharacter>();
+    }
+
+    private void Update()
+    {
+        SetIsRunning(_agentCharacter.HasPath);
+    }
+
+    private void SetIsRunning(bool isRunning)
     {
         _animator.SetBool(_isRunningHash, isRunning);
     }
