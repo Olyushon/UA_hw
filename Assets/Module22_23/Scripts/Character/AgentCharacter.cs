@@ -6,18 +6,20 @@ public class AgentCharacter : MonoBehaviour, IDamagable, IBombActivator
     [SerializeField] private int _maxHealth = 100;
     [SerializeField] private int _injuredHealthPercentLimit = 30;
 
-    [SerializeField] private float _rotationSpeed = 700f;
-
+    [SerializeField] private float _rotationSpeed = 500f;
+    [SerializeField] private float _jumpSpeed = 15f;
+    [SerializeField] private AnimationCurve _jumpCurve;
 
     private Health _health;
     private NavMeshAgent _agent;
     private DirectionalRotator _rotator;
     private CharacterViewAnimator _characterAnimator;
-
+    private AgentJumper _jumper;
 
     public bool HasPath => IsDead == false && _agent.hasPath;
     public bool IsDestinationReached => _agent.remainingDistance <= _agent.stoppingDistance;
     public Vector3 Destination => _agent.destination;
+    public bool IsJumping => _jumper.InProcess;
     private bool IsDead => _health.IsDead;
     private bool IsInjured => _health.IsInjured;
 
@@ -31,6 +33,8 @@ public class AgentCharacter : MonoBehaviour, IDamagable, IBombActivator
         _rotator = new DirectionalRotator(transform, _rotationSpeed);
 
         _characterAnimator = GetComponent<CharacterViewAnimator>();
+
+        _jumper = new AgentJumper(_agent, _jumpSpeed, this, _jumpCurve);
     }
 
     private void Update()
@@ -40,7 +44,9 @@ public class AgentCharacter : MonoBehaviour, IDamagable, IBombActivator
 
         if (_agent.hasPath)
         {
-            _rotator.SetInputDirection(_agent.desiredVelocity);
+            if (IsJumping == false)
+                _rotator.SetInputDirection(_agent.desiredVelocity);
+
             _rotator.Update(Time.deltaTime);
         }
     }
@@ -51,6 +57,14 @@ public class AgentCharacter : MonoBehaviour, IDamagable, IBombActivator
             return;
 
         _agent.SetDestination(destination);
+    }
+
+    public void SetRotation(Vector3 direction)
+    {
+        if (IsDead)
+            return;
+
+        _rotator.SetInputDirection(direction);
     }
 
     public void TakeDamage(int damage)
@@ -66,4 +80,18 @@ public class AgentCharacter : MonoBehaviour, IDamagable, IBombActivator
                 _characterAnimator.Die();
         }
     }
+
+    public bool IsOnMeshLink(out OffMeshLinkData offMeshLinkData) 
+    {
+        if (_agent.isOnOffMeshLink)
+        {
+            offMeshLinkData = _agent.currentOffMeshLinkData;
+            return true;
+        }
+
+        offMeshLinkData = default(OffMeshLinkData);
+        return false;
+    }
+
+    public void Jump(OffMeshLinkData offMeshLinkData) => _jumper.Jump(offMeshLinkData);
 }

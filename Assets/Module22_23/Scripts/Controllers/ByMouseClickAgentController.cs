@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 public class ByMouseClickAgentController : Controller
 {
@@ -13,6 +15,19 @@ public class ByMouseClickAgentController : Controller
 
     protected override void UpdateLogic(float deltaTime)
     {
+        if (_agentCharacter.IsOnMeshLink(out OffMeshLinkData offMeshLinkData))
+        {
+            if (_agentCharacter.IsJumping == false)
+            {
+                _agentCharacter.SetRotation(offMeshLinkData.endPos - offMeshLinkData.startPos);
+                _agentCharacter.Jump(offMeshLinkData);
+            }
+            return;
+        }
+
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         if (Input.GetMouseButtonDown(LeftMouseButton))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

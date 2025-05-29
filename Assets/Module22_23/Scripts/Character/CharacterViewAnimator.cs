@@ -3,6 +3,7 @@ using UnityEngine;
 public class CharacterViewAnimator : MonoBehaviour
 {
     private readonly int _isRunningHash = Animator.StringToHash("IsRunning");
+    private readonly int _isJumpingHash = Animator.StringToHash("IsJumping");
     private readonly int _takeDamageHash = Animator.StringToHash("HasPain");
     private readonly int _dieHash = Animator.StringToHash("IsDead");
     private readonly string _injuredLayerName = "Injured Layer";
@@ -19,11 +20,17 @@ public class CharacterViewAnimator : MonoBehaviour
     private void Update()
     {
         SetIsRunning(_agentCharacter.HasPath);
+        SetIsJumping(_agentCharacter.IsJumping);
     }
 
     private void SetIsRunning(bool isRunning)
     {
         _animator.SetBool(_isRunningHash, isRunning);
+    }
+
+    private void SetIsJumping(bool isJumping)
+    {
+        _animator.SetBool(_isJumpingHash, isJumping);
     }
 
     public void TakeDamage()
