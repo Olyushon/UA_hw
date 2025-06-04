@@ -1,0 +1,2 @@
+
+public delegate bool DestroyCause();
