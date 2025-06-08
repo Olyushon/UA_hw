@@ -10,11 +10,11 @@ public class WalletExample : MonoBehaviour
 
     private void Awake()
     {
-        _wallet = new Wallet(new Dictionary<CurrencyType, int>
+        _wallet = new Wallet(new Dictionary<CurrencyType, Currency>
         {
-            { CurrencyType.Coin, 100 },
-            { CurrencyType.Gem, 50 },
-            { CurrencyType.Energy, 10 }
+            { CurrencyType.Coin, new Currency(100) },
+            { CurrencyType.Gem, new Currency(50) },
+            { CurrencyType.Energy, new Currency(10) }
         });
 
         _walletView.Initialize(_wallet);

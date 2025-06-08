@@ -6,28 +6,25 @@ public class CurrencyView : MonoBehaviour
 {
     [SerializeField] private Image _icon;
     [SerializeField] private TextMeshProUGUI _amountText;
-    private CurrencyType _type;
-    private Wallet _wallet;
+    private Currency _currency;
 
-    public void Initialize(CurrencyType type, Sprite icon, int amount, Wallet wallet)
+    public void Initialize(Sprite icon, Currency currency)
     {
-        _type = type;
         SetIcon(icon);
-        SetText(amount);
+        SetText(currency.Amount);
 
-        _wallet = wallet;
-        _wallet.CurrencyAmountChanged += OnCurrencyAmountChanged;
+        _currency = currency;
+        _currency.AmountChanged += OnCurrencyAmountChanged;
     }
 
     private void OnDisable()
     {
-        _wallet.CurrencyAmountChanged -= OnCurrencyAmountChanged;
+        _currency.AmountChanged -= OnCurrencyAmountChanged;
     }
 
-    private void OnCurrencyAmountChanged(CurrencyType currencyType, int amount)
+    private void OnCurrencyAmountChanged(int amount)
     {
-        if (currencyType == _type)
-            SetText(amount);
+        SetText(amount);
     }
 
     private void SetIcon(Sprite sprite)

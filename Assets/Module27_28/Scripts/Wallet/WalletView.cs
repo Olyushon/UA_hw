@@ -18,32 +18,32 @@ public class WalletView : MonoBehaviour
 
     public void Show()
     {
-        Dictionary<CurrencyType, int> currenciesAmount = _wallet.CurrenciesAmount;
+        Dictionary<CurrencyType, Currency> currenciesAmount = _wallet.CurrenciesAmount;
 
-        foreach (KeyValuePair<CurrencyType, int> currency in currenciesAmount)
+        foreach (KeyValuePair<CurrencyType, Currency> currencyPair in currenciesAmount)
         {
-            switch (currency.Key)
+            switch (currencyPair.Key)
             {
                 case CurrencyType.Coin:
-                    CreateCurrencyView(currency.Key, _coinIcon, currency.Value);
+                    CreateCurrencyView(_coinIcon, currencyPair.Value);
                     break;
                 case CurrencyType.Gem:
-                    CreateCurrencyView(currency.Key, _gemIcon, currency.Value);
+                    CreateCurrencyView(_gemIcon, currencyPair.Value);
                     break;
                 case CurrencyType.Energy:
-                    CreateCurrencyView(currency.Key, _energyIcon, currency.Value);
+                    CreateCurrencyView(_energyIcon, currencyPair.Value);
                     break;
                 default:
-                    Debug.LogError($"Currency type {currency.Key} not found");
+                    Debug.LogError($"Currency type {currencyPair.Key} not found");
                     break;
             }
         }
     }
 
-    private void CreateCurrencyView(CurrencyType currencyType, Sprite icon, int amount)
+    private void CreateCurrencyView(Sprite icon, Currency currency)
     {
         CurrencyView currencyView = Instantiate(_currencyViewPrefab, transform);
-        currencyView.Initialize(currencyType, icon, amount, _wallet);
+        currencyView.Initialize(icon, currency);
     }
 
 }
