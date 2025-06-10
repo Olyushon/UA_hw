@@ -8,9 +8,14 @@ public class ItemsTimerView : MonoBehaviour, ITimerView
     public void Initialize(TimerService timerService)
     {
         _timerService = timerService;
-        _timerService.TimeChanged += UpdateView;
+        _timerService.TimeLeft.Changed += OnTimeChanged;
 
-        UpdateView(_timerService.Time);
+        UpdateView(_timerService.TimeLeft.Value);
+    }
+
+    private void OnTimeChanged(int oldTimeLeft, int newTimeLeft)
+    {
+        UpdateView(newTimeLeft);
     }
 
     public void UpdateView(int timeLeft)
@@ -22,7 +27,7 @@ public class ItemsTimerView : MonoBehaviour, ITimerView
             Instantiate(_itemIconPrefab, transform);
         }
     }
-
+    
     private void DestroyAllChildren()
     {
         foreach (Transform child in transform)
@@ -33,6 +38,6 @@ public class ItemsTimerView : MonoBehaviour, ITimerView
 
     private void OnDestroy()
     {
-        _timerService.TimeChanged -= UpdateView;
+        _timerService.TimeLeft.Changed -= OnTimeChanged;
     }
 }

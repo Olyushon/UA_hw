@@ -5,23 +5,21 @@ using System;
 
 public class TimerService
 {
-    public event Action<int> TimeChanged; 
-
     private MonoBehaviour _coroutineRunner;
     private int _time;
-    private int _timeLeft;
+    private ReactableVariable<int> _timeLeft;
     private Coroutine _timerCoroutine;
     private bool _isPaused;
 
     public int Time => _time;
-    public int TimeLeft => _timeLeft;
+    public IReactableVariable<int> TimeLeft => _timeLeft;
     public bool InProcess => _timerCoroutine != null;
     public bool IsPaused => _isPaused;
     
     public TimerService(int time, MonoBehaviour coroutineRunner)  
     {
         _time = time;
-        _timeLeft = time;
+        _timeLeft = new ReactableVariable<int>(time);
         _coroutineRunner = coroutineRunner;
     }
 
@@ -53,19 +51,17 @@ public class TimerService
         _timerCoroutine = null;
         _isPaused = false;
 
-        _timeLeft = _time;
-        TimeChanged?.Invoke(_timeLeft);
+        _timeLeft.Value = _time;
     }   
     
     private IEnumerator TimerCoroutine()
     {
-        while (_timeLeft > 0)
+        while (_timeLeft.Value > 0)
         {
             yield return new WaitWhile(() => _isPaused);
 
             yield return new WaitForSeconds(1);
-            _timeLeft--;
-            TimeChanged?.Invoke(_timeLeft);
+            _timeLeft.Value--;
         }
     }
 }

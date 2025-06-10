@@ -3,30 +3,39 @@ using System;
 
 public class Currency
 {
-    public event Action<int> AmountChanged;
-    private int _amount;
+    private ReactableVariable<int> _amount;
 
     public Currency(int amount)
     {
-        _amount = amount;
+        _amount = new ReactableVariable<int>(amount);
     }
 
-    public int Amount => _amount;
+    public IReactableVariable<int> Amount => _amount;
 
 
     public void Add(int amount)
     {
-        _amount += amount;
-        AmountChanged?.Invoke(_amount);
+        if (amount < 0)
+        {
+            Debug.LogError("Amount is less than 0");
+            return;
+        }
+
+        _amount.Value += amount;
     }
 
     public void Spend(int amount)
     {
-        _amount -= amount;
+        if (amount < 0)
+        {
+            Debug.LogError("Amount is less than 0");
+            return;
+        }
 
-        if (_amount < 0)
-            _amount = 0;
+        _amount.Value -= amount;
 
-        AmountChanged?.Invoke(_amount);
+        if (_amount.Value < 0)
+            _amount.Value = 0;  
+
     }
 }

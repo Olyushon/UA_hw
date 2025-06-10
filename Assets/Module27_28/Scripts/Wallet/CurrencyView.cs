@@ -11,20 +11,20 @@ public class CurrencyView : MonoBehaviour
     public void Initialize(Sprite icon, Currency currency)
     {
         SetIcon(icon);
-        SetText(currency.Amount);
+        SetText(currency.Amount.Value);
 
         _currency = currency;
-        _currency.AmountChanged += OnCurrencyAmountChanged;
+        _currency.Amount.Changed += OnCurrencyAmountChanged;
     }
 
     private void OnDisable()
     {
-        _currency.AmountChanged -= OnCurrencyAmountChanged;
+        _currency.Amount.Changed -= OnCurrencyAmountChanged;
     }
 
-    private void OnCurrencyAmountChanged(int amount)
+    private void OnCurrencyAmountChanged(int oldAmount, int newAmount)
     {
-        SetText(amount);
+        SetText(newAmount);
     }
 
     private void SetIcon(Sprite sprite)

@@ -7,12 +7,17 @@ public class WalletExample : MonoBehaviour
     [SerializeField] private WalletView _walletView;
     
     private Wallet _wallet;
+    private Currency _coinCurrency;
 
     private void Awake()
     {
+        _coinCurrency = new Currency(100);
+
+        SetTestCoinsAmountFollowing();
+
         _wallet = new Wallet(new Dictionary<CurrencyType, Currency>
         {
-            { CurrencyType.Coin, new Currency(100) },
+            { CurrencyType.Coin, _coinCurrency },
             { CurrencyType.Gem, new Currency(50) },
             { CurrencyType.Energy, new Currency(10) }
         });
@@ -39,5 +44,20 @@ public class WalletExample : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha6))
             _wallet.Spend(CurrencyType.Energy, 1);
+    }
+
+    private void SetTestCoinsAmountFollowing()
+    {
+        _coinCurrency.Amount.Changed += OnCoinsAmountChanged;
+    }
+
+    private void OnDestroy()
+    {
+        _coinCurrency.Amount.Changed -= OnCoinsAmountChanged;
+    }
+
+    private void OnCoinsAmountChanged(int oldAmount, int newAmount)
+    {
+        Debug.Log($"Coins amount changed from {oldAmount} to {newAmount}");
     }
 }   
