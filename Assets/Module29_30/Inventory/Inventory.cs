@@ -14,7 +14,7 @@ public class Inventory
         _items = new List<Item>();
     }
 
-    public List<Item> Items => _items;
+    public IReadOnlyList<Item> Items => _items;
 
     public void AddItem(Item item)
     {

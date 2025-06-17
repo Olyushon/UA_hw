@@ -18,7 +18,7 @@ public class WalletView : MonoBehaviour
 
     public void Show()
     {
-        Dictionary<CurrencyType, Currency> currenciesAmount = _wallet.CurrenciesAmount;
+        IReadOnlyDictionary<CurrencyType, Currency> currenciesAmount = _wallet.CurrenciesAmount;
 
         foreach (KeyValuePair<CurrencyType, Currency> currencyPair in currenciesAmount)
         {

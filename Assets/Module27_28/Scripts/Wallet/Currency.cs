@@ -10,7 +10,7 @@ public class Currency
         _amount = new ReactableVariable<int>(amount);
     }
 
-    public IReactableVariable<int> Amount => _amount;
+    public IReactable<int> Amount => _amount;
 
 
     public void Add(int amount)

@@ -1,6 +1,6 @@
 using System;
 
-public interface IReactableVariable<T>
+public interface IReactable<T>
 {
     event Action<T, T> Changed;
 

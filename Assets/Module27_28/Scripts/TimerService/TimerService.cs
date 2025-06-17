@@ -12,7 +12,7 @@ public class TimerService
     private bool _isPaused;
 
     public int Time => _time;
-    public IReactableVariable<int> TimeLeft => _timeLeft;
+    public IReactable<int> TimeLeft => _timeLeft;
     public bool InProcess => _timerCoroutine != null;
     public bool IsPaused => _isPaused;
     

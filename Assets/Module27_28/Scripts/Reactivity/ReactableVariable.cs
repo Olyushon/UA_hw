@@ -1,6 +1,6 @@
 using System;
 
-public class ReactableVariable<T> : IReactableVariable<T> where T : IEquatable<T>
+public class ReactableVariable<T> : IReactable<T> where T : IEquatable<T>
 {
     public event Action<T, T> Changed;
 

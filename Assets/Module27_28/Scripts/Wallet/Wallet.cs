@@ -12,7 +12,7 @@ public class Wallet
         _currenciesAmount = currenciesAmount;
     }
 
-    public Dictionary<CurrencyType, Currency> CurrenciesAmount => _currenciesAmount;
+    public IReadOnlyDictionary<CurrencyType, Currency> CurrenciesAmount => _currenciesAmount;
 
 
     public void Add(CurrencyType currencyType, int amount)
